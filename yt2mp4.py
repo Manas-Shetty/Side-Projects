@@ -14,6 +14,8 @@ def download_video(url, download_directory):
         'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
         'outtmpl': temp_file,
         'merge_output_format': 'mp4',
+        'n_threads': 4,  # Number of threads to use for downloading
+        'buffer_size': '16K',  # Buffer size for downloading
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -23,7 +25,7 @@ def download_video(url, download_directory):
     temp_mp4 = temp_file.replace('%(ext)s', 'mp4')
     final_mp4 = output_file.replace('%(ext)s', 'mp4')
     ffmpeg_command = [
-        'ffmpeg', '-i', temp_mp4, '-vcodec', 'libx264', '-crf', '28', '-preset', 'slow', final_mp4
+        'ffmpeg', '-i', temp_mp4, '-vcodec', 'libx265', '-crf', '28', '-preset', 'slow', final_mp4
     ]
     subprocess.run(ffmpeg_command)
 
